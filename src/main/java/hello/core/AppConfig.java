@@ -17,20 +17,25 @@ public class AppConfig {
     // 역할과 구현으로 분리
     // 다른 구현체로 쉽게 변경할 수 있음. 어떤역할을 하는 지 보임.
     // 애플리케이션 전체 구성이 어떻게 되어 있는 지 파악 가능함.
-
+    // @Bean memberService -> new MemoryMemberRepository()
+    // @Bean orderService  -> new MemoryMemberRepository(
+    // 얼핏 봤을 때 싱글톤 패턴이 깨진 것처럼 2번이 호출되고 있다.
     @Bean
     public MemberService memberService(){
+        System.out.println("call AppConfig.memberService");
         // 생성자 주입
         return new MemberServiceImpl(memberRepository());
     }
 
     @Bean
     public MemberRepository memberRepository(){
+        System.out.println("call AppConfig.memberRepository");
         return new MemoryMemberRepository();
     }
 
     @Bean
     public OrderService orderService(){
+        System.out.println("call AppConfig.orderService");
         return new OrderServiceImpl(memberRepository(), dicsountPolicy());
     }
 
